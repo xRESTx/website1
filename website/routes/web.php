@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\InterestController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TestFormController;
+
+Route::get('/', function () {
+    return view('home');
+});
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact.form');
+
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+Route::get('/education', function () {
+    return view('education');
+});
+
+Route::get('/interests', function () {
+    return view('interests');
+});
+
+Route::get('/test', [TestFormController::class, 'show'])->name('test.show');
+Route::post('/test', [TestFormController::class, 'submit'])->name('test.submit');
+
+Route::get('/photo', [PhotoController::class, 'index']);
+
+Route::get('/interests', [InterestController::class, 'index']);

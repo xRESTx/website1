@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+
+
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.form-label {
+    @apply block text-gray-300 mb-1;
+}
+
+.form-group {
+    @apply mb-4;
+}
+
+.form-input, .form-select, .form-textarea{
+    @apply w-full px-4 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-500;
+}
+
+.form-button {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition;
+}
+
+/* Стили для таблицы */
+.table-cell {
+    @apply px-4 py-2;
+}
+
+.table-row {
+    @apply bg-gray-800 hover:bg-gray-700;
+}
+
+/* Стиль для заголовков */
+.section-title {
+    @apply text-3xl font-semibold text-gray-100;
+}
+
+/* Стили для ссылок */
+.test-link {
+    @apply text-blue-500 hover:underline;
+}
+
+/* Стили для параграфов */
+.section-text {
+    @apply text-lg text-gray-300;
+}
