@@ -30,6 +30,9 @@
                 </li>
                 <li><a href="{{ url('/photo') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Photo</a></li>
                 <li><a href="{{ url('/contact') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Contact form</a></li>
+                <li><a href="{{ url('/guestbook') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Guestbook</a></li>
+                <li><a href="{{ url('/blog') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Blog</a></li>
+                <li><a href="{{ url('/blog/editor') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Blog Editor</a></li>
             </ul>
         </nav>
     </div>
