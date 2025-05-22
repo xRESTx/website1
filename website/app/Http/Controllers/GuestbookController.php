@@ -48,4 +48,33 @@ class GuestbookController extends Controller
 
         return redirect()->route('guestbook')->with('success', 'Ваш отзыв добавлен!');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required|file|mimes:txt,inc',
+        ]);
+
+        $file = $request->file('import_file');
+        $lines = file($file->getPathname());
+
+        foreach ($lines as $line) {
+            $parts = explode(';', trim($line), 4); // ограничение до 4 элементов
+            if (count($parts) === 4) {
+                [$date, $fio, $email, $text] = $parts;
+
+                $clean = implode(';', [
+                        trim($date),
+                        trim($fio),
+                        trim($email),
+                        str_replace(["\r", "\n", ";"], ' ', trim($text)),
+                    ]) . PHP_EOL;
+
+                file_put_contents(storage_path("app/messages.inc"), $clean, FILE_APPEND);
+            }
+        }
+
+        return redirect()->route('guestbook')->with('success', 'Отзывы успешно импортированы!');
+    }
+
 }

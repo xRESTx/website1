@@ -41,9 +41,11 @@ Route::get('/interests', [InterestController::class, 'index']);
 
 Route::get('/guestbook', [GuestbookController::class, 'show'])->name('guestbook');
 Route::post('/guestbook', [GuestbookController::class, 'store'])->name('guestbook.submit');
+Route::post('/guestbook/import', [GuestbookController::class, 'import'])->name('guestbook.import');
 
 
 Route::get('/blog/editor', [BlogController::class, 'index'])->name('blog.editor');
 Route::post('/blog/store', [BlogController::class, 'store'])->name('blog.store');
 Route::post('/blog/import', [BlogController::class, 'uploadCsv'])->name('blog.csv');
 Route::get('/blog', [BlogController::class, 'publicIndex'])->name('blog.index');
+

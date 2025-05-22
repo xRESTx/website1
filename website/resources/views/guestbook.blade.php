@@ -45,6 +45,16 @@
                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" />
     </form>
 
+    <form action="{{ route('guestbook.import') }}" method="POST" enctype="multipart/form-data" class="mb-6 bg-gray-800 p-4 rounded">
+        @csrf
+        <div class="flex items-center space-x-4">
+            <input type="file" name="import_file" required
+                   class="bg-gray-700 text-white border border-gray-600 rounded p-2" />
+            <x-form.button type="submit" fieldLabel="Импортировать отзывы"
+                           class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded" />
+        </div>
+    </form>
+
     {{-- Таблица сообщений --}}
     <h3 class="text-xl text-white font-semibold mb-2">Отзывы пользователей:</h3>
     <table class="w-full bg-gray-700 text-white rounded overflow-hidden">
