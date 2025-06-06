@@ -54,3 +54,5 @@
 .section-text {
     @apply text-lg text-gray-300;
 }
+
+[x-cloak] { display: none !important; }

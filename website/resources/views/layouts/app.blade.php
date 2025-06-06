@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
+<body {{-- x-data="{ loginOpen: false }" --}}class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
 
 <header class="bg-gray-800 shadow-md py-4">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
@@ -17,7 +17,7 @@
         </h1>
         <nav class="mt-3 md:mt-0">
             <ul class="flex flex-col md:flex-row gap-4 text-gray-200">
-                <li><a href="{{ url('/') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">MainPage</a></li>
+{{--                <li><a href="{{ url('/') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">MainPage</a></li>--}}
                 <li><a href="{{ url('/about') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">About Me</a></li>
                 <li><a href="{{ url('/interests') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">My interests</a></li>
                 <li class="relative group hover:bg-gray-700">
@@ -32,7 +32,24 @@
                 <li><a href="{{ url('/contact') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Contact form</a></li>
                 <li><a href="{{ url('/guestbook') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Guestbook</a></li>
                 <li><a href="{{ url('/blog') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Blog</a></li>
-                <li><a href="{{ url('/blog/editor') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Blog Editor</a></li>
+                @if(session()->has('role'))
+                    @if(session('role')=='admin')
+                        <li><a href="{{ url('/blog/editor') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Edit Blog</a></li>
+                        <li><a href="{{ url('/visits') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Log</a></li>
+                    @endif
+                    <li><div class="text">
+                            Пользователь:
+                        {{session('username')}}</li>
+                    <li><a href="{{ url('/login') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Logout</a></li>
+                @else
+                    <li><a href="{{ url('/login') }}" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">Login</a></li>
+                @endif
+
+{{--                <li><a href="login" class="hover:text-gray-300 hover:bg-gray-700 px-3 py-2 rounded transition">login</li>--}}
+{{--                @if(session()->has('role') && session('role')=='admin')--}}
+{{--                    <li><a href="history">История сайта</a></li>--}}
+{{--                @endif--}}
+
             </ul>
         </nav>
     </div>
@@ -45,6 +62,47 @@
 <footer class="bg-gray-800 text-center py-4 text-sm text-gray-400">
     <p>&copy; REST 2024 — All rights reserved</p>
 </footer>
+
+{{--<div x-show="loginOpen" x-cloak--}}
+{{--     class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">--}}
+{{--    <div @click.outside="loginOpen = false"--}}
+{{--         class="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md relative text-white">--}}
+
+{{--        <button @click="loginOpen = false" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl">&times;</button>--}}
+
+{{--        <h2 class="text-xl font-bold mb-4">Авторизация</h2>--}}
+
+{{--        <form method="POST" action="{{ route('login.custom') }}" class="space-y-4">--}}
+{{--            @csrf--}}
+
+{{--            @if ($errors->any())--}}
+{{--                <div class="mb-4 text-red-500">--}}
+{{--                    <ul>--}}
+{{--                        @foreach ($errors->all() as $error)--}}
+{{--                            <li>{{ $error }}</li>--}}
+{{--                        @endforeach--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
+{{--            @endif--}}
+
+{{--            <div>--}}
+{{--                <label for="email" class="block mb-1">E-mail</label>--}}
+{{--                <input type="email" name="email" id="email" required--}}
+{{--                       class="w-full bg-gray-700 p-2 rounded border border-gray-600 focus:outline-none focus:ring focus:border-blue-400">--}}
+{{--            </div>--}}
+{{--            <div>--}}
+{{--                <label for="password" class="block mb-1">Пароль</label>--}}
+{{--                <input type="password" name="password" id="password" required--}}
+{{--                       class="w-full bg-gray-700 p-2 rounded border border-gray-600 focus:outline-none focus:ring focus:border-blue-400">--}}
+{{--            </div>--}}
+{{--            <div class="text-right">--}}
+{{--                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">--}}
+{{--                    Войти--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--        </form>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 <script>
     @yield('script')

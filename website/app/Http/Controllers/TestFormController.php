@@ -8,7 +8,8 @@ use App\Services\CustomFormValidation;
 use App\Services\ResultsValidation;
 
 class TestFormController extends Controller {
-    public function show() {
+    public function show(Request $request) {
+        $this->logVisit($request);
         return view('test');
     }
 
@@ -41,7 +42,13 @@ class TestFormController extends Controller {
             ->with('results', $results);
     }
     public function showResults() {
+        if (!session()->has('role')) {
+            session()->flash('show_modal', true);
+            return redirect()->route('test')->with('modal_message', 'Для просмотра результатов — зарегистрируйтесь.');
+        }
+
         $results = TestResult::latest()->get();
         return view('testResults', compact('results'));
     }
+
 }

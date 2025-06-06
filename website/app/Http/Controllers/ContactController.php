@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\FormValidation;
 
 class ContactController extends Controller{
-    public function show()    {
+    public function show(Request $request)    {
+        $this->logVisit($request);
         return view('contact'); // твой Blade-файл с формой
     }
 

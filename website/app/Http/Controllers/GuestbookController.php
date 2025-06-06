@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class GuestbookController extends Controller
-{
+class GuestbookController extends Controller {
     private $file = 'messages.inc';
 
-    public function show()
-    {
+    public function show(Request $request) {
+        $this->logVisit($request);
         $messages = [];
 
         if (Storage::exists($this->file)) {
@@ -24,8 +23,7 @@ class GuestbookController extends Controller
         return view('guestbook', compact('messages'));
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validated = $request->validate([
             'lastname' => 'required|string|max:50',
             'firstname' => 'required|string|max:50',
@@ -49,8 +47,7 @@ class GuestbookController extends Controller
         return redirect()->route('guestbook')->with('success', 'Ваш отзыв добавлен!');
     }
 
-    public function import(Request $request)
-    {
+    public function import(Request $request) {
         $request->validate([
             'import_file' => 'required|file|mimes:txt,inc',
         ]);
@@ -76,5 +73,4 @@ class GuestbookController extends Controller
 
         return redirect()->route('guestbook')->with('success', 'Отзывы успешно импортированы!');
     }
-
 }

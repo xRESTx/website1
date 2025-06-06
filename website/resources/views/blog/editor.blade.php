@@ -45,17 +45,55 @@
     </form>
 
     <h3 class="text-xl font-semibold mb-4">Список записей</h3>
-
     @foreach ($posts as $post)
-        <div class="bg-gray-800 rounded p-4 mb-4">
-            <h4 class="text-xl font-bold text-white">{{ $post->title }}</h4>
+        <div class="bg-gray-800 rounded p-4 mb-4" id="post-{{ $post->id }}">
+            <h4 class="text-xl font-bold text-white" id="title-{{ $post->id }}">{{ $post->title }}</h4>
             <p class="text-gray-300 text-sm mb-2">{{ $post->created_at->format('d.m.Y H:i') }}</p>
             @if ($post->image_path)
                 <img src="{{ asset('storage/' . $post->image_path) }}" alt="Image" class="w-full max-w-md mb-3 rounded" />
             @endif
-            <p class="text-gray-200">{{ $post->body }}</p>
+            <p class="text-gray-200" id="body-{{ $post->id }}">{{ $post->body }}</p>
+            <button onclick="showEditForm({{ $post->id }})" class="mt-2 text-blue-400 hover:underline">Изменить</button>
+
+            <div id="edit-form-{{ $post->id }}" class="hidden mt-4">
+                <input type="text" id="edit-title-{{ $post->id }}" value="{{ $post->title }}" class="bg-gray-600 w-full mb-2 p-2 rounded">
+                <textarea id="edit-body-{{ $post->id }}" class="bg-gray-600 w-full p-2 rounded">{{ $post->body }}</textarea>
+                <button onclick="submitEdit({{ $post->id }})" class="mt-2 bg-green-600 text-white py-1 px-3 rounded">Сохранить изменения</button>
+            </div>
         </div>
     @endforeach
-
     {{ $posts->links('components.pagination') }}
 @endsection
+<script>
+    function showEditForm(id) {
+        document.getElementById('edit-form-' + id).classList.toggle('hidden');
+    }
+
+    function submitEdit(id) {
+        const title = document.getElementById('edit-title-' + id).value;
+        const body = document.getElementById('edit-body-' + id).value;
+        const token = '{{ csrf_token() }}';
+
+        fetch(`/blog/${id}/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+            },
+            body: JSON.stringify({ title, body })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('title-' + id).innerText = data.title;
+                    document.getElementById('body-' + id).innerText = data.body;
+                    document.getElementById('edit-form-' + id).classList.add('hidden');
+                } else if (data.errors) {
+                    alert('Ошибка: ' + Object.values(data.errors).flat().join(', '));
+                } else if (data.error) {
+                    alert('Ошибка: ' + data.error);
+                }
+            })
+            .catch(error => alert('Ошибка сервера: ' + error));
+    }
+</script>

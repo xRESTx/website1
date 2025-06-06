@@ -3,6 +3,21 @@
 @section('title', 'Test')
 
 @section('content')
+{{--    @if (!session()->has('role'))--}}
+{{--        <div id="accessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">--}}
+{{--            <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm text-center">--}}
+{{--                <h3 class="text-lg font-semibold mb-4 text-red-600">Доступ ограничен</h3>--}}
+{{--                <p class="text-gray-800 mb-6">Для просмотра результатов — зарегистрируйтесь или войдите в систему.</p>--}}
+{{--                <a href="{{ route('login') }}"--}}
+{{--                   class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Войти</a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--        <script>--}}
+{{--            document.body.style.overflow = 'hidden';--}}
+{{--        </script>--}}
+{{--    @endif--}}
+
     <h2 class="text-3xl font-semibold mb-6">Input data and answer the question</h2>
 
     @if ($errors->any())
@@ -14,6 +29,38 @@
     @endif
 
     @if (session('results'))
+        @if (!session()->has('role'))
+            <div id="accessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm text-center relative animate-fade-in">
+                    <button onclick="closeAccessModal()"
+                            class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
+
+                    <h3 class="text-lg font-semibold mb-4 text-red-600">Доступ ограничен</h3>
+                    <p class="text-gray-800 mb-6">Для просмотра результатов — зарегистрируйтесь или войдите в систему.</p>
+                    <a href="{{ route('login') }}"
+                       class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Войти</a>
+                </div>
+            </div>
+            <script>
+                document.body.style.overflow = 'hidden';
+                function closeAccessModal() {
+                    const modal = document.getElementById('accessModal');
+                    modal.style.opacity = '0';
+                    modal.style.pointerEvents = 'none';
+                    document.body.style.overflow = 'auto';
+                    setTimeout(() => modal.remove(), 300);
+                }
+            </script>
+            <style>
+                @keyframes fade-in {
+                    from { opacity: 0; transform: scale(0.95); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+                .animate-fade-in {
+                    animation: fade-in 0.3s ease-out forwards;
+                }
+            </style>
+        @else
         <div id="resultsBlock" class="bg-gray-700 text-white p-4 rounded-lg mt-4 mb-6 relative max-w-4xl mx-auto transition-opacity duration-500 ease-in-out">
             <button onclick="closeResults()"
                     class="absolute top-2 right-2 text-white hover:text-red-400 font-bold text-xl leading-none">&times;</button>
@@ -34,6 +81,7 @@
             }
             setTimeout(closeResults, 5000);
         </script>
+        @endif
     @endif
 
     <form action="{{ route('test.submit') }}" method="POST" class="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
